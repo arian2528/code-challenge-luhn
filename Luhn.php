@@ -8,6 +8,8 @@ class Luhn
      * @param string $cardNumber The raw card number
      * @return string
      * @access private
+     *
+     * CodeChallengeComment: Normally this will go into a helper class
      */
     private function cleanCardNumber(string $cardNumber): string {
 
@@ -16,10 +18,26 @@ class Luhn
     }
 
     /**
+     * Validates that the card number only contains digits
+     * @param string $cardNumber
+     * @throws Exception
+     *
+     * CodeChallengeComment: This could have be handle in some other previous step
+     */
+    private function validateCardNumber(string $cardNumber)
+    {
+        if (!ctype_digit($cardNumber)) {
+            throw new Exception("cardNumber param contains an invalid card number");
+        }
+    }
+
+    /**
      * Calculate the Luhn algorithm source https://en.wikipedia.org/wiki/Luhn_algorithm
      * @param string $cardNumber
      * @return int
      * @access private
+     *
+     * This could be in his own class and Luhn class will extend it
      */
     private function calculateLuhn(string $cardNumber): int
     {
@@ -48,9 +66,7 @@ class Luhn
     {
         $cardNumber = $this->cleanCardNumber($cardNumber);
 
-        if (!ctype_digit($cardNumber)) {
-            throw new Exception("cardNumber param contains an invalid card number");
-        }
+        $this->validateCardNumber($cardNumber);
 
         return ($this->calculateLuhn($cardNumber) == 0);
     }
@@ -66,9 +82,7 @@ class Luhn
     {
         $cardNumber = $this->cleanCardNumber($cardNumber);
 
-        if (!ctype_digit($cardNumber)) {
-            throw new Exception("cardNumber param contains an invalid card number");
-        }
+        $this->validateCardNumber($cardNumber);
 
         $luhnResult = $this->calculateLuhn($cardNumber . '0');
 
